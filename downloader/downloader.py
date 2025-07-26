@@ -100,7 +100,6 @@ class ScrapyAgent:
             timeout=timeout,
             headers=request.headers.to_unicode_dict(),
             data=body,
-            http_version="v2",
             verify=False,
         )
         return response
@@ -141,7 +140,7 @@ class ScrapyAgent:
         respcls = responsetypes.from_args(
             headers=headers, url=url, body=txresponse.content
         )
-
+        print(txresponse.http_version)
         protocol = "http/1.1"
         if txresponse.http_version == 2:
             protocol = "http/2.0"
