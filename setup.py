@@ -1,11 +1,9 @@
 from setuptools import setup, find_packages
 
-from setuptools import setup, find_packages
-
 setup(
     name="scrapy_curl_cffi",  # 库的名称
     version="0.1.0",  # 版本号
-    author="Aox Lei",
+    author="Spencer",
     author_email="aox.kei@gmail.com",
     description="A Downloader for Scrapy",
     long_description=open("README.md").read(),

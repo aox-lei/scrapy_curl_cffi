@@ -20,8 +20,8 @@ USER_AGENT = None
 # 取消scrapy的gzip压缩
 COMPRESSION_ENABLED = False
 DOWNLOAD_HANDLERS = {
-    "http": "downloader.downloader.HTTPDownloadHandler",
-    "https": "downloader.downloader.HTTPDownloadHandler",
+    "http": "scrapy_curl_cffi.HTTPDownloadHandler",
+    "https": "scrapy_curl_cffi.HTTPDownloadHandler",
 }
 
 # 
