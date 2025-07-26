@@ -29,6 +29,55 @@ logger = logging.getLogger(__name__)
 
 _T = TypeVar("_T")
 
+default_impersonates_pc = [
+    # Edge
+    "edge99",
+    "edge101",
+    # Chrome
+    "chrome99",
+    "chrome100",
+    "chrome101",
+    "chrome104",
+    "chrome107",
+    "chrome110",
+    "chrome116",
+    "chrome119",
+    "chrome120",
+    "chrome123",
+    "chrome124",
+    "chrome131",
+    "chrome133a",
+    "chrome136",
+    # Safari
+    "safari153",
+    "safari155",
+    "safari170",
+    "safari180",
+    "safari184",
+    "safari260",
+    # Firefox
+    "firefox133",
+    "firefox135",
+    "tor145",
+    # alias
+    "chrome",
+    "edge",
+    "safari",
+    "safari_beta",
+    "firefox",
+]
+default_impersonates_mobile = [
+    "chrome99_android",
+    "chrome131_android",
+    "safari172_ios",
+    "safari180_ios",
+    "safari184_ios",
+    "safari260_ios",
+    "safari_ios",
+    "safari_ios_beta",
+    "chrome_android",
+]
+
 
 class HTTPDownloadHandler:
     lazy = False
@@ -43,6 +92,10 @@ class HTTPDownloadHandler:
         self._default_warnsize: int = settings.getint("DOWNLOAD_WARNSIZE")
         self._fail_on_dataloss: bool = settings.getbool("DOWNLOAD_FAIL_ON_DATALOSS")
         self._impersonates: list[str] = settings.getlist("DOWNLOAD_IMPERSONATES")
+        self._impersonate_random: bool = settings.getbool("DOWNLOAD_IMPERSONATE_RANDOM")
+        self._impersonate_type: str = settings.get(
+            "DOWNLOAD_IMPERSONATE_TYPE"
+        )  # pc, mobile, both
 
     @classmethod
     def from_crawler(cls, crawler: Crawler) -> Self:
@@ -57,6 +110,8 @@ class HTTPDownloadHandler:
             warnsize=getattr(spider, "download_warnsize", self._default_warnsize),
             crawler=self._crawler,
             impersonates=self._impersonates,
+            impersonate_random=self._impersonate_random,
+            impersonate_type=self._impersonate_type,
         )
         return agent.download_request(request)
 
@@ -75,6 +130,8 @@ class ScrapyAgent:
         warnsize: int = 0,
         fail_on_dataloss: bool = True,
         impersonates: list[str] = [],
+        impersonate_random: bool = False,
+        impersonate_type: str = "both",
         crawler: Crawler,
     ):
         self._connectTimeout: float = connectTimeout
@@ -83,6 +140,8 @@ class ScrapyAgent:
         self._warnsize: int = warnsize
         self._fail_on_dataloss: bool = fail_on_dataloss
         self._impersonates: list[str] = impersonates
+        self._impersonate_random: bool = impersonate_random
+        self._impersonate_type: str = impersonate_type
         self._crawler: Crawler = crawler
 
     async def _download_request(self, request: Request):
@@ -109,6 +168,15 @@ class ScrapyAgent:
         if impersonate is None:
             if self._impersonates:
                 impersonate = random.choice(self._impersonates)
+            elif self._impersonate_random:
+                if self._impersonate_type == "both":
+                    impersonate = random.choice(
+                        default_impersonates_pc + default_impersonates_mobile
+                    )
+                elif self._impersonate_type == "pc":
+                    impersonate = random.choice(default_impersonates_pc)
+                elif self._impersonate_type == "mobile":
+                    impersonate = random.choice(default_impersonates_mobile)
         return impersonate
 
     def download_request(self, request: Request) -> Deferred[Response]:
@@ -140,7 +208,6 @@ class ScrapyAgent:
         respcls = responsetypes.from_args(
             headers=headers, url=url, body=txresponse.content
         )
-        print(txresponse.http_version)
         protocol = "http/1.1"
         if txresponse.http_version == 2:
             protocol = "http/2.0"

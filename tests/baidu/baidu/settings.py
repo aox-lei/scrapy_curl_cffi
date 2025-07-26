@@ -24,8 +24,10 @@ DOWNLOAD_HANDLERS = {
     "https": "scrapy_curl_cffi.HTTPDownloadHandler",
 }
 
-# 
+#
 DOWNLOAD_IMPERSONATES = ["chrome133a"]
+DOWNLOAD_IMPERSONATE_RANDOM = True # 是否自动随机选择一个模拟浏览器, 如果设置了DOWNLOAD_IMPERSONATES, 则此配置项无效
+DOWNLOAD_IMPERSONATE_TYPE = "pc"  # pc, mobile, both 如果设置了DOWNLOAD_IMPERSONATES, 则此配置项无效
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -34,7 +36,7 @@ ROBOTSTXT_OBEY = False
 # CONCURRENT_REQUESTS = 16
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 1
-DEFAULT_REQUEST_HEADERS={}
+DEFAULT_REQUEST_HEADERS = {}
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
