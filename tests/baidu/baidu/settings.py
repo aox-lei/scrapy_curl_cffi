@@ -15,7 +15,7 @@ NEWSPIDER_MODULE = "baidu.spiders"
 ADDONS = {}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-# USER_AGENT = "baidu (+http://www.yourdomain.com)"
+USER_AGENT = None
 
 # 取消scrapy的gzip压缩
 COMPRESSION_ENABLED = False
@@ -25,7 +25,7 @@ DOWNLOAD_HANDLERS = {
 }
 
 # 
-DOWNLOAD_IMPERSONATES = ["edge99", "edge101", "chrome99"]
+DOWNLOAD_IMPERSONATES = ["chrome133a"]
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -34,6 +34,7 @@ ROBOTSTXT_OBEY = False
 # CONCURRENT_REQUESTS = 16
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS={}
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False

@@ -100,6 +100,7 @@ class ScrapyAgent:
             timeout=timeout,
             headers=request.headers.to_unicode_dict(),
             data=body,
+            http_version="v2",
             verify=False,
         )
         return response
