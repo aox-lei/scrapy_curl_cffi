@@ -146,7 +146,7 @@ class ScrapyAgent:
 
     async def _download_request(self, request: Request):
         timeout = request.meta.get("download_timeout") or self._connectTimeout
-
+        dont_merge_cookies = request.meta.get("dont_merge_cookies", False)
         method = request.method.upper()
         url = urldefrag(request.url)[0]
         body = request.body or None
@@ -160,6 +160,7 @@ class ScrapyAgent:
             headers=request.headers.to_unicode_dict(),
             data=body,
             verify=False,
+            discard_cookies=dont_merge_cookies,
         )
         return response
 

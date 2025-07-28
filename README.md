@@ -10,6 +10,7 @@ DOWNLOAD_HANDLERS = {
     "http": "scrapy_curl_cffi.downloader.HTTPDownloadHandler",
     "https": "scrapy_curl_cffi.downloader.HTTPDownloadHandler",
 }
+USER_AGENT = None
 ```
 
 ### 设置指定的浏览器

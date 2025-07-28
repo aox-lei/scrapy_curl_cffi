@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="scrapy_curl_cffi",  # 库的名称
-    version="0.1.2",  # 版本号
+    version="0.1.3",  # 版本号
     author="Spencer",
     author_email="aox.kei@gmail.com",
     description="A Downloader for Scrapy",
