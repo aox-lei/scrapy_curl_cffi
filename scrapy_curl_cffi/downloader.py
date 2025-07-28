@@ -165,18 +165,21 @@ class ScrapyAgent:
 
     def _get_impersonate(self, request: Request) -> str | None:
         impersonate = request.meta.get("download_impersonate")
-        if impersonate is None:
-            if self._impersonates:
-                impersonate = random.choice(self._impersonates)
-            elif self._impersonate_random:
-                if self._impersonate_type == "both":
-                    impersonate = random.choice(
-                        default_impersonates_pc + default_impersonates_mobile
-                    )
-                elif self._impersonate_type == "pc":
-                    impersonate = random.choice(default_impersonates_pc)
-                elif self._impersonate_type == "mobile":
-                    impersonate = random.choice(default_impersonates_mobile)
+        if impersonate:
+            return impersonate
+
+        if self._impersonates:
+            impersonate = random.choice(self._impersonates)
+            return impersonate
+        elif self._impersonate_random:
+            if self._impersonate_type == "both":
+                impersonate = random.choice(
+                    default_impersonates_pc + default_impersonates_mobile
+                )
+            elif self._impersonate_type == "pc":
+                impersonate = random.choice(default_impersonates_pc)
+            elif self._impersonate_type == "mobile":
+                impersonate = random.choice(default_impersonates_mobile)
         return impersonate
 
     def download_request(self, request: Request) -> Deferred[Response]:
