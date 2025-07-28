@@ -114,9 +114,12 @@ class HTTPDownloadHandler:
             impersonate_type=self._impersonate_type,
         )
         return agent.download_request(request)
-    
+
     def cookies(self):
         return self.session_handler.cookies
+
+    def cookie_clear(self):
+        return self.session_handler.cookies.clear()
 
     def close(self) -> Deferred[None]:
         d = Deferred.fromFuture(asyncio.ensure_future(self.session_handler.close()))
