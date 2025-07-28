@@ -156,6 +156,7 @@ class ScrapyAgent:
         method = request.method.upper()
         url = urldefrag(request.url)[0]
         body = request.body or None
+        cookies = request.cookies or None
 
         response = await self._session.request(
             method=method,  # type:ignore[arg-type]
@@ -167,6 +168,7 @@ class ScrapyAgent:
             data=body,
             verify=False,
             discard_cookies=dont_merge_cookies,
+            cookies=cookies, # type:ignore[arg-type]
         )
         return response
 
